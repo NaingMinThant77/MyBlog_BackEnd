@@ -1,25 +1,12 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser"); //npm install body-parser
-
-const sequelize = require("./utils/database")
-
-const Post = require("./models/post")
-const User = require("./models/user")
+const mongodbConnector = require("./utils/database")
 
 const app = express();
 
-app.use((req, res, next) => {
-    User.findByPk(1).then((user) => {
-        req.user = user;
-        console.log(user)
-        next();
-    }).catch(err => console.log(err))
-})
-
 app.set("view engine", "ejs");
-//second para - folder name
-app.set("views", "views")
+app.set("views", "views") //second para - folder name
 
 //required middleware for external files - for css
 app.use(express.static(path.join(__dirname, "public")))
@@ -43,29 +30,15 @@ app.use("/admin", (req, res, next) => {
     next();
 })
 
+//Routes
+
 const postRoutes = require("./routes/post")
 app.use(postRoutes);
 
 const adminRoutes = require("./routes/admin")
 app.use("/admin", adminRoutes);
 
-Post.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
-User.hasMany(Post);
-//{ force: true }
-sequelize.sync().then(
-    result => {
-        return User.findByPk(1);
-    }
-).then(user => {
-    if (!user) {
-        return User.create({ name: "CodeHub", email: "abcd@gmail.com" })
-    }
-    return user
-}).then(
-    user => {
-        console.log(user)
-        app.listen(8080)
-    }
-).catch(err => console.log(err))
+mongodbConnector();
+app.listen(8080);
 
 

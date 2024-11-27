@@ -1,8 +1,10 @@
-const Sequelize = require("sequelize"); //Upperletter is class-based
+const mongodb = require("mongodb");
+const mongodbClient = mongodb.MongoClient;
 
-const sequelize = new Sequelize("blog", "root", "marco123", {
-    host: "localhost",
-    dialect: "mysql"
-});
+const dotenv = require("dotenv").config();
 
-module.exports = sequelize;
+const mongodbConnector = () => {
+    mongodbClient.connect(process.env.MONGODB_URL).then(result => { console.log("Connected to database."); console.log(result) }).catch(err => console.log(err));
+}
+
+module.exports = mongodbConnector;
