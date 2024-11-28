@@ -1,9 +1,9 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser"); //npm install body-parser
-const { mongodbConnector } = require("./utils/database")
-
 const app = express();
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 app.set("view engine", "ejs");
 app.set("views", "views") //second para - folder name
@@ -14,11 +14,6 @@ app.use(express.static(path.join(__dirname, "public")))
 //clg "req.body" in terminal
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//use middleware
-app.use((req, res, next) => { //not write route "/", it works on everywhere
-    console.log("I am parent middleware")
-    next()
-})
 
 app.use("/post", (req, res, next) => {
     console.log("I am post middleware")
@@ -31,14 +26,14 @@ app.use("/admin", (req, res, next) => {
 })
 
 //Routes
-
 const postRoutes = require("./routes/post")
 app.use(postRoutes);
 
 const adminRoutes = require("./routes/admin")
 app.use("/admin", adminRoutes);
 
-mongodbConnector();
-app.listen(8080);
+mongoose.connect(process.env.MONGODB_URL).then(
+    () => { console.log("Database connected"); app.listen(8080); }
+).catch(err => console.log(err))
 
 
