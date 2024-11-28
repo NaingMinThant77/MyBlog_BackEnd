@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser"); //npm install body-parser
-const mongodbConnector = require("./utils/database")
+const { mongodbConnector } = require("./utils/database")
 
 const app = express();
 

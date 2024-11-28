@@ -19,7 +19,8 @@
                     <p class="post-title">
                         <%= post.title %>
                     </p>
-                    <a class="btn" href="/post/<%= post.id %>">See More...</a>
+                    <a class="btn" href="/post/<%= post._id %>">See More...</a>
+                    <!-- mongodb - _id -->
                 </div>
                 <% } %>
                     <%- include("./includes/foot") %>
