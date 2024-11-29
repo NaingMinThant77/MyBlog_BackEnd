@@ -33,6 +33,9 @@ app.use(postRoutes);
 const adminRoutes = require("./routes/admin")
 app.use("/admin", adminRoutes);
 
+const authRoutes = require("./routes/auth")
+app.use(authRoutes)
+
 mongoose.connect(process.env.MONGODB_URL).then(
     () => {
         app.listen(8080); console.log("Database connected");
