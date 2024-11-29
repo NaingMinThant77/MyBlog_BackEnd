@@ -4,22 +4,35 @@
     <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum dignissimos rem et nobis ipsam
         necessitatibus ullam quidem corporis saepe doloribus quos, adipisci quasi consequuntur repellendus autem
         aspernatur sapiente unde molestiae?</p>
-    <a href="/admin/create-post">Add a new post</a>
-    <hr>
-    <h1 class="title">Posts</h1>
-    <% if (postsArr.length===0) { %>
-        <div>
-            <h4>Nothing to see?</h4>
-            <p>Create a new post now</p>
-            <a href="/admin/create-post">Create a new post</a>
-        </div>
-        <% } %>
-            <% for( let post of postsArr) { %>
-                <div class="post-box">
-                    <p class="post-title">
-                        <%= post.title %>
-                    </p>
-                    <a class="btn" href="/post/<%= post.id %>">See More...</a>
-                </div>
-                <% } %>
-                    <%- include("./includes/foot") %>
+    <% if(isLogin) { %>
+        <a href="/admin/create-post">Add a new post</a>
+        <form action="/logout" method="post">
+            <button>Logout</button>
+        </form>
+        <% } else { %>
+            <a href="/login">Create a new account</a>
+            <% } %>
+                <hr>
+                <h1 class="title">Posts</h1>
+                <% if (postsArr.length===0) { %>
+                    <div>
+                        <h4>Nothing to see?</h4>
+                        <p>Create a new post now</p>
+                        <a href="/admin/create-post">Create a new post</a>
+                    </div>
+                    <% } %>
+                        <% for( let post of postsArr) { %>
+                            <div class="post-box">
+                                <div>
+                                    <p class="post-title">
+                                        <%= post.title %>
+                                    </p>
+                                    <p>
+                                        Post by - @<%= post.userId.username %>
+                                    </p>
+                                </div>
+                                <a class="btn" href="/post/<%= post._id %>">See More...</a>
+                                <!-- mongodb - _id -->
+                            </div>
+                            <% } %>
+                                <%- include("./includes/foot") %>

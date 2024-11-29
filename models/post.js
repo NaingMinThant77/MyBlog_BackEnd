@@ -1,19 +1,12 @@
-const Sequelize = require("sequelize");
+const mongoose = require("mongoose");
 
-const sequelize = require("../utils/database")
+const { Schema, model } = mongoose;
 
-//create singular(auto plural in database) = posts => post
-const Post = sequelize.define("post", {
-    id: { type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true },
-    title: {
-        type: Sequelize.STRING, allowNull: false
-    },
-    description: {
-        type: Sequelize.TEXT, allowNull: false
-    },
-    imgUrl: {
-        type: Sequelize.TEXT, allowNull: false
-    }
+const postSchema = new Schema({
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    imgUrl: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true }
 })
 
-module.exports = Post;
+module.exports = model("Post", postSchema)

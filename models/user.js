@@ -1,11 +1,10 @@
-const Sequelize = require("sequelize")
+const mongoose = require("mongoose");
+const { Schema, model } = mongoose;
 
-const sequelize = require("../utils/database")
+const userSchema = new Schema({
+    username: { type: String, unique: true, required: true, minLength: 3, maxLength: 6 },
+    email: { type: String, unique: true, required: true },
+    password: { type: String, required: true, minLength: 4 },
+})
 
-const User = sequelize.define("user", {
-    id: { type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true },
-    name: Sequelize.STRING,
-    email: Sequelize.STRING
-});
-
-module.exports = User;
+module.exports = model("User", userSchema)

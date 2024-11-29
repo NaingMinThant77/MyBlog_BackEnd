@@ -1,25 +1,29 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser"); //npm install body-parser
-
-const sequelize = require("./utils/database")
-
-const Post = require("./models/post")
-const User = require("./models/user")
-
 const app = express();
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-app.use((req, res, next) => {
-    User.findByPk(1).then((user) => {
-        req.user = user;
-        console.log(user)
-        next();
-    }).catch(err => console.log(err))
+const User = require("./models//user")
+
+const session = require("express-session");
+
+const mongoStore = require("connect-mongodb-session")(session)
+const store = new mongoStore({
+    uri: process.env.MONGODB_URI,
+    collection: "sessions"
 })
 
+app.use(session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store
+}))
+
 app.set("view engine", "ejs");
-//second para - folder name
-app.set("views", "views")
+app.set("views", "views") //second para - folder name
 
 //required middleware for external files - for css
 app.use(express.static(path.join(__dirname, "public")))
@@ -27,45 +31,36 @@ app.use(express.static(path.join(__dirname, "public")))
 //clg "req.body" in terminal
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//use middleware
-app.use((req, res, next) => { //not write route "/", it works on everywhere
-    console.log("I am parent middleware")
-    next()
+
+app.use((req, res, next) => {
+    User.findById("67487771c59cddb35f9f8b38").then(
+        user => {
+            req.user = user; //custom request and add
+            next();
+        }
+    )
 })
 
-app.use("/post", (req, res, next) => {
-    console.log("I am post middleware")
-    next()
-})
-
-app.use("/admin", (req, res, next) => {
-    console.log("admin middleware approved!")
-    next();
-})
-
+//Routes
 const postRoutes = require("./routes/post")
 app.use(postRoutes);
 
 const adminRoutes = require("./routes/admin")
 app.use("/admin", adminRoutes);
 
-Post.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
-User.hasMany(Post);
-//{ force: true }
-sequelize.sync().then(
-    result => {
-        return User.findByPk(1);
-    }
-).then(user => {
-    if (!user) {
-        return User.create({ name: "CodeHub", email: "abcd@gmail.com" })
-    }
-    return user
-}).then(
-    user => {
-        console.log(user)
-        app.listen(8080)
-    }
-).catch(err => console.log(err))
+const authRoutes = require("./routes/auth")
+app.use(authRoutes)
+
+mongoose.connect(process.env.MONGODB_URL).then(
+    () => {
+        app.listen(8080); console.log("Database connected");
+
+        return User.findOne().then(user => {
+            if (!user) {
+                User.create({ username: "Marco", email: "marco@gmail.com", password: "marco123" })
+            }
+            return user;
+        })
+    }).then(result => console.log(result)).catch(err => console.log(err))
 
 
