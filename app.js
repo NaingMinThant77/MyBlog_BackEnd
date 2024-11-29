@@ -7,6 +7,21 @@ require("dotenv").config();
 
 const User = require("./models//user")
 
+const session = require("express-session");
+
+const mongoStore = require("connect-mongodb-session")(session)
+const store = new mongoStore({
+    uri: process.env.MONGODB_URI,
+    collection: "sessions"
+})
+
+app.use(session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store
+}))
+
 app.set("view engine", "ejs");
 app.set("views", "views") //second para - folder name
 

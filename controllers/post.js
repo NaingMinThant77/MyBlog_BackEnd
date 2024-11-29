@@ -15,15 +15,12 @@ exports.renderCreatePage = (req, res) => {
 }
 
 exports.getPosts = (req, res) => {
-    // isLogIn = true
-    const cookie = req.get("Cookie").split("=")[1].trim() === "true";
-    console.log(cookie)
     Post.find().select("title")
         .populate('userId', "username")
         .sort({ title: -1 }).then(
             posts => {
                 // console.log(posts)
-                res.render("home", { title: "HomePage", postsArr: posts, isLogin: cookie });
+                res.render("home", { title: "HomePage", postsArr: posts, isLogin: req.session.isLogin ? true : false });
             }
         ).catch(err => console.log(err))
 }
