@@ -32,14 +32,14 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-app.use((req, res, next) => {
-    User.findById("67487771c59cddb35f9f8b38").then(
-        user => {
-            req.user = user; //custom request and add
-            next();
-        }
-    )
-})
+// app.use((req, res, next) => {
+//     User.findById("67487771c59cddb35f9f8b38").then(
+//         user => {
+//             req.user = user; //custom request and add
+//             next();
+//         }
+//     )
+// })
 
 //Routes
 const postRoutes = require("./routes/post")
@@ -53,14 +53,8 @@ app.use(authRoutes)
 
 mongoose.connect(process.env.MONGODB_URL).then(
     () => {
-        app.listen(8080); console.log("Database connected");
-
-        return User.findOne().then(user => {
-            if (!user) {
-                User.create({ username: "Marco", email: "marco@gmail.com", password: "marco123" })
-            }
-            return user;
-        })
-    }).then(result => console.log(result)).catch(err => console.log(err))
+        app.listen(8080);
+        console.log("Database connected");
+    }).catch(err => console.log(err))
 
 
