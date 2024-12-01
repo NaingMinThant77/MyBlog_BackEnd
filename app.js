@@ -4,6 +4,7 @@ const bodyParser = require("body-parser"); //npm install body-parser
 const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
+// const csrf = require("csurf");// with cookie
 
 const User = require("./models//user")
 
@@ -20,7 +21,10 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store
-}))
+}));
+
+// const csrfProtect = csrf();
+// app.use(csrfProtect);
 
 app.set("view engine", "ejs");
 app.set("views", "views") //second para - folder name
@@ -32,21 +36,34 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
+app.use((req, res, next) => {
+    if (req.session.isLogin === undefined) {
+        return next()
+    }
+    User.findById(req.session.userInfo._id).select("_id email").then(
+        user => {
+            req.user = user; //custom request and add
+            console.log(req.user)
+            next();
+        }
+    )
+})
+
+// //to send csrf token for every page
 // app.use((req, res, next) => {
-//     User.findById("67487771c59cddb35f9f8b38").then(
-//         user => {
-//             req.user = user; //custom request and add
-//             next();
-//         }
-//     )
+//     res.locals.isLogin = req.session.isLogin ? true : false;
+//     res.locals.csrfToken = req.csrfToken();
+//     next();
 // })
+// <!-- <input type="hidden" name="_csrf" value="<%= csrfToken %>"> -->
 
 //Routes
+const { isLogin } = require("./middleware/is-login")
 const postRoutes = require("./routes/post")
 app.use(postRoutes);
 
 const adminRoutes = require("./routes/admin")
-app.use("/admin", adminRoutes);
+app.use("/admin", isLogin, adminRoutes);
 
 const authRoutes = require("./routes/auth")
 app.use(authRoutes)

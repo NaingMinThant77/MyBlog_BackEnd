@@ -16,14 +16,21 @@ exports.renderCreatePage = (req, res) => {
 
 exports.getPosts = (req, res) => {
     Post.find().select("title")
-        .populate('userId', "username")
+        .populate('userId', "email")
         .sort({ title: -1 }).then(
             posts => {
                 // console.log(posts)
-                res.render("home", { title: "HomePage", postsArr: posts, isLogin: req.session.isLogin ? true : false });
+                res.render("home", {
+                    title: "HomePage",
+                    postsArr: posts,
+                    isLogin: req.session.isLogin ? true : false,
+                });
+
             }
         ).catch(err => console.log(err))
 }
+
+//42:07
 
 exports.getPost = (req, res) => {
     const postId = req.params.postId;
