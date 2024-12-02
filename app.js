@@ -5,6 +5,7 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
 // const csrf = require("csurf");// with cookie
+const flash = require("connect-flash");
 
 const User = require("./models//user")
 
@@ -48,6 +49,8 @@ app.use((req, res, next) => {
         }
     )
 })
+
+app.use(flash());
 
 // //to send csrf token for every page
 // app.use((req, res, next) => {
