@@ -1,17 +1,25 @@
 <%- include("./includes/head") %>
     <section class="details">
-        <h1>
-            <%= post.title %>
-        </h1>
+        <div>
+            <h1>
+                <%= post.title %>
+            </h1>
+            <a href="/">Go back</a>
+        </div>
         <img src="<%= post.imgUrl%>" alt="<%= post.title %>">
+        <hr>
         <p>
             <%= post.description %>
         </p>
         <% if(post.userId.toString()===currentLoginUserId.toString()){ %>
-            <form action="/admin/post/<%= post._id%>" method="post">
-                <button>Delete Post</button>
-            </form>
-            <a href="/admin/post-edit/<%= post._id%>" class="btn-edit">Edit Post</a>
-            <% } %>
+            <div class="login-div">
+                <div>
+                    <form action="/admin/post/<%= post._id%>" method="post">
+                        <button>Delete</button>
+                    </form>
+                    <a href="/admin/post-edit/<%= post._id%>" class="btn-edit">Edit</a>
+                    <% } %>
+                </div>
+            </div>
     </section>
     <%- include("./includes/foot") %>

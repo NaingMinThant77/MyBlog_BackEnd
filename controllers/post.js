@@ -15,7 +15,7 @@ exports.renderCreatePage = (req, res) => {
 }
 
 exports.getPosts = (req, res) => {
-    Post.find().select("title")
+    Post.find().select("title description")
         .populate('userId', "email")
         .sort({ title: -1 }).then(
             posts => {
