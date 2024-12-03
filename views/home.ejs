@@ -5,7 +5,7 @@
         necessitatibus ullam quidem corporis saepe doloribus quos, adipisci quasi consequuntur repellendus autem
         aspernatur sapiente unde molestiae?</p>
     <% if(isLogin) { %>
-        <a href="/admin/create-post">Add a new post</a>
+        <a href="/admin/create-post">Add a new post as <%= currentUserEmail%></a>
         <form action="/logout" method="post">
             <button>Logout</button>
         </form>
@@ -15,11 +15,11 @@
             <% } %>
                 <hr>
                 <h1 class="title">Posts</h1>
-                <% if (postsArr.length===0) { %>
+                <% if (postsArr.length===0 && isLogin) { %>
                     <div>
                         <h4>Nothing to see?</h4>
                         <p>Create a new post now</p>
-                        <a href="/admin/create-post">Create a new post</a>
+                        <a href="/admin/create-post">Create a new post as <%= currentUserEmail%></a>
                     </div>
                     <% } %>
                         <% for( let post of postsArr) { %>

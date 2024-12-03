@@ -7,9 +7,11 @@
         <p>
             <%= post.description %>
         </p>
-        <form action="/admin/post/<%= post._id%>" method="post">
-            <button>Delete Post</button>
-        </form>
-        <a href="/admin/post-edit/<%= post._id%>" class="btn-edit">Edit Post</a>
+        <% if(post.userId.toString()===currentLoginUserId.toString()){ %>
+            <form action="/admin/post/<%= post._id%>" method="post">
+                <button>Delete Post</button>
+            </form>
+            <a href="/admin/post-edit/<%= post._id%>" class="btn-edit">Edit Post</a>
+            <% } %>
     </section>
     <%- include("./includes/foot") %>
