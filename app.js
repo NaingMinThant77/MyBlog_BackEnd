@@ -71,6 +71,12 @@ app.use("/admin", isLogin, adminRoutes);
 const authRoutes = require("./routes/auth")
 app.use(authRoutes)
 
+const errorController = require("./controllers/error")
+app.all("*", errorController.get404Page);
+
+//error middleware
+app.use(errorController.get500Page);
+
 mongoose.connect(process.env.MONGODB_URL).then(
     () => {
         app.listen(8080);

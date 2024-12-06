@@ -26,7 +26,7 @@ router.get("/reset-password", authController.getResetPage)
 
 router.get("/feekback", authController.getFeekbackPage)
 
-router.post("/reset", authController.resetLinkSend)
+router.post("/reset", body("email").isEmail().withMessage("Please enter a valid email address"), authController.resetLinkSend)
 
 router.get("/reset-password/:token", authController.getNewPasswordPage)
 

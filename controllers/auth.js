@@ -122,7 +122,7 @@ exports.logout = (req, res) => {
 }
 
 exports.getResetPage = (req, res) => {
-    res.render("auth/reset", { title: "ResetPage", errorMsg: req.flash("error")[0] })
+    res.render("auth/reset", { title: "ResetPage", errorMsg: req.flash("error")[0], oldFormData: { email: "" } })
 }
 
 exports.getFeekbackPage = (req, res) => {
@@ -135,6 +135,12 @@ exports.getExperiationPage = (req, res) => {
 
 exports.resetLinkSend = (req, res) => {
     const { email } = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).render("auth/reset", { title: "ResetPage", errorMsg: req.flash("error")[0], oldFormData: { email } })
+    }
+
     crypto.randomBytes(32, (err, buffer) => {
         if (err) {
             console.log(err);

@@ -4,22 +4,29 @@
             <h1>
                 <%= post.title %>
             </h1>
+            <!-- <i class="fa-solid fa-arrow-left"></i> -->
             <a href="/">Go back</a>
         </div>
-        <img src="<%= post.imgUrl%>" alt="<%= post.title %>">
-        <hr>
-        <p>
-            <%= post.description %>
+        <p>Post by - <%= post.userId.email%>
         </p>
-        <% if(post.userId.toString()===currentLoginUserId.toString()){ %>
-            <div class="login-div">
-                <div>
-                    <form action="/admin/post/<%= post._id%>" method="post">
-                        <button>Delete</button>
-                    </form>
-                    <a href="/admin/post-edit/<%= post._id%>" class="btn-edit">Edit</a>
-                    <% } %>
-                </div>
-            </div>
+        <% if(date) { %>
+            <p>Updated at: <%= date %>
+            </p>
+            <% } %>
+                <img src="<%= post.imgUrl%>" alt="<%= post.title %>">
+                <hr>
+                <p>
+                    <%= post.description %>
+                </p>
+                <% if(post.userId.toString()===currentLoginUserId.toString()){ %>
+                    <div class="login-div">
+                        <div>
+                            <form action="/admin/post/<%= post._id%>" method="post">
+                                <button>Delete</button>
+                            </form>
+                            <a href="/admin/post-edit/<%= post._id%>" class="btn-edit">Edit</a>
+                            <% } %>
+                        </div>
+                    </div>
     </section>
     <%- include("./includes/foot") %>
