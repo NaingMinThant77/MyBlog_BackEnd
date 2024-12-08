@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 // const csrf = require("csurf");// with cookie
 const flash = require("connect-flash");
+const multer = require("multer"); //npm install --save multer
 
 const User = require("./models//user")
 
@@ -17,6 +18,33 @@ const store = new mongoStore({
     collection: "sessions"
 })
 
+const storageConfigure = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads")
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, uniqueSuffix + '-' + file.originalname)
+    },
+})
+
+const fileFilterConfigure = (req, file, cb) => {
+    if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg") {
+        cb(null, true)
+    } else {
+        cb(null, false)
+    }
+}
+
+//required middleware for external files - for css
+app.use(express.static(path.join(__dirname, "public")))
+app.use("/uploads", express.static(path.join(__dirname, "uploads")))
+
+//clg "req.body" in terminal
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(multer({ storage: storageConfigure, fileFilter: fileFilterConfigure }).single("photo"))
+
 app.use(session({
     secret: process.env.SESSION_KEY,
     resave: false,
@@ -24,17 +52,13 @@ app.use(session({
     store
 }));
 
+
+
 // const csrfProtect = csrf();
 // app.use(csrfProtect);
 
 app.set("view engine", "ejs");
 app.set("views", "views") //second para - folder name
-
-//required middleware for external files - for css
-app.use(express.static(path.join(__dirname, "public")))
-
-//clg "req.body" in terminal
-app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.use((req, res, next) => {

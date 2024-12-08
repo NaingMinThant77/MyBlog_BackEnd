@@ -2,21 +2,29 @@
     <section class="mx-auto">
         <a href="/">Go back Home</a>
         <h1 class="title">Edit your post here</h1>
-        <form action="/admin/post-edit" method="post">
-            <input type="text" name="postId" value="<%= post._id %>" hidden>
-            <div>
-                <label for="title">Enter title</label>
-                <input type="text" id="title" name="title" value="<%= post.title %>" required>
-            </div>
-            <div>
-                <label for="photo">Enter Photo</label>
-                <input type="text" id="photo" name="photo" value="<%= post.imgUrl %>" required>
-            </div>
-            <div>
-                <label for="description">Enter a description</label>
-                <textarea name="description" id="description" cols="30" rows="10"><%= post.description %></textarea>
-            </div>
-            <button>Update Post</button>
-        </form>
+        <% if(errorMsg){ %>
+            <p class="msg-box">
+                <%= errorMsg %>
+            </p>
+            <% }%>
+                <form action="/admin/post-edit" method="post" enctype="multipart/form-data">
+                    <input type="text" name="postId" value="<%= isValidationFail ? postId : post._id %>" hidden>
+                    <div>
+                        <label for="title">Enter title</label>
+                        <input type="text" id="title" name="title" required
+                            value="<%= isValidationFail ? oldFormData.title : post.title %>">
+                    </div>
+                    <div>
+                        <label for="photo">Enter Photo</label>
+                        <input type="file" id="photo" name="photo">
+                    </div>
+                    <div>
+                        <label for="description">Enter a description</label>
+                        <textarea name="description" id="description" cols="30"
+                            rows="10"><%= isValidationFail ? oldFormData.description : post.description %></textarea>
+
+                    </div>
+                    <button>Update Post</button>
+                </form>
     </section>
     <%- include("./includes/foot") %>

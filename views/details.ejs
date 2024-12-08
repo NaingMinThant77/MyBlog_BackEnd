@@ -13,14 +13,14 @@
             <p>Updated at: <%= date %>
             </p>
             <% } %>
-                <img src="<%= post.imgUrl%>" alt="<%= post.title %>">
+                <img src="<%= '/' + post.imgUrl %>" alt="<%= post.title %>">
                 <hr>
                 <p>
                     <%= post.description %>
                 </p>
-                <% if(post.userId.toString()===currentLoginUserId.toString()){ %>
-                    <div class="login-div">
-                        <div>
+                <% if(post.userId._id.toString()===currentLoginUserId.toString()) { %>
+                    <div>
+                        <div class="login-div">
                             <form action="/admin/post/<%= post._id%>" method="post">
                                 <button>Delete</button>
                             </form>
