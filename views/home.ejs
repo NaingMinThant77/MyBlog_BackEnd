@@ -57,4 +57,16 @@
                                 </div>
                                 <% } %>
                         </div>
+                        <div class="paginate">
+                            <% if(!hasNextPage && currentPage==1 ) {%>
+                                <a href="?page=2">NextPage</a>
+                                <% } %>
+                                    <% if(hasNextPage ) {%>
+                                        <a href="?page=<%=nextPage%>">NextPage<%=nextPage%></a>
+                                        <% } %>
+                                            <% if(hasPreviousPage ) {%>
+                                                <a href="?page=<%=previousPage%>">PreviousPage<%=previousPage%></a>
+                                                <% } %>
+
+                        </div>
                         <%- include("./includes/foot") %>

@@ -51,24 +51,43 @@ exports.renderCreatePage = (req, res) => {
     })
 }
 
-exports.getPosts = (req, res, next) => {
-    Post.find().select("title description")
-        .populate('userId', "email")
-        .sort({ title: -1 }).then(
-            posts => {
-                // console.log(posts)
-                res.render("home", {
-                    title: "HomePage",
-                    postsArr: posts,
-                    isLogin: req.session.isLogin ? true : false,
-                    currentUserEmail: req.session.userInfo ? req.session.userInfo.email : ""
-                });
+const POST_PAR_PAGE = 3
 
-            }
-        ).catch(err => {
-            console.log(err)
-            return next(new Error("Something went wrong when getting all posts")); //error middleware
-        })
+exports.getPosts = (req, res, next) => {
+    //.skip(1).limit(2)
+    // total(6) - skip(1) = total(5) => limit(2) = show 2 posts
+    // skip = startIndex
+
+    const pageNumber = +req.query.page || 1;
+    let totalPostNumber;
+
+    Post.find().countDocuments().then(totalPostCount => {
+        totalPostNumber = totalPostCount;
+        return Post.find().select("title description")
+            .populate('userId', "email")
+            .skip((pageNumber - 1) * POST_PAR_PAGE).limit(POST_PAR_PAGE)
+            .sort({ createdAt: -1 })
+    }).then(posts => {
+        // console.log(posts)
+        if (posts.length > 0) {
+            res.render("home", {
+                title: "HomePage",
+                postsArr: posts,
+                isLogin: req.session.isLogin ? true : false,
+                currentUserEmail: req.session.userInfo ? req.session.userInfo.email : "",
+                currentPage: pageNumber,
+                hasNextPage: POST_PAR_PAGE * pageNumber < totalPostNumber,
+                hasPreviousPage: pageNumber > 1,
+                nextPage: pageNumber + 1,
+                previousPage: pageNumber - 1
+            });
+        } else {
+            return res.status(500).render("error/500", { title: "Something went wrong!", message: "No post in this page query" })
+        }
+    }).catch(err => {
+        console.log(err)
+        return next(new Error("Something went wrong when getting all posts")); //error middleware
+    })
 }
 
 exports.getPost = (req, res, next) => {
@@ -187,19 +206,16 @@ exports.savePostAsPDF = async (req, res, next) => {
         const html = fs.readFileSync(templateUrl, "utf8");
         const options = {
             format: "A3",
-            orientation: "portrait",
+            orientation: "landscape",
             border: "10mm",
             header: {
-                height: "45mm",
+                height: "20mm",
                 contents: '<div style="text-align: center;">PDF DOWNLOAD FROM BLOG.IO</div>'
-            },
-            footer: {
-                height: "28mm",
-                contents: {
-                    first: 'Cover page',
-                    contents: '<span style="color: #444; text-align: center">@marco.mm</span>'
-                }
             }
+            // footer: {
+            //     height: "15mm",
+            //     contents: '<p style="color: #444; text-align: center">@marco.mm</p>'
+            // }
         };
 
         const post = await Post.findById(id).populate("userId", "email").lean();
