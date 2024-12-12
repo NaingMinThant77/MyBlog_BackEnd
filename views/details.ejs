@@ -1,33 +1,32 @@
 <%- include("./includes/head") %>
     <section class="details">
-        <div>
+        <div class="details-first">
             <h1>
                 <%= post.title %>
             </h1>
-            <!-- <i class="fa-solid fa-arrow-left"></i> -->
-            <a href="/">Go back</a>
         </div>
-        <p>Post by - <%= post.userId.email%>
-        </p>
-        <% if(date) { %>
-            <p>Updated at: <%= date %>
-            </p>
+        <div class="details-sec">
+            <div>
+                <p class="tmp"><i class="fa-solid fa-user"></i> - <%= post.userId.email%>
+                </p>
+                <p class="tmp"><i class="fa-solid fa-calendar-days"></i>
+                    <%= date %>
+                </p>
+            </div>
+            <a href="/save/<%= post._id%>"><i class="fa-solid fa-file-arrow-down down-ic"></i></a>
+        </div>
+        <img src="<%= '/' + post.imgUrl %>" alt="<%= post.title %>">
+        <hr>
+        <% if(post.userId._id.toString()===currentLoginUserId.toString()) { %>
+            <div class="action-div">
+                <form action="/admin/post/<%= post._id%>" method="post">
+                    <button>Delete</button>
+                </form>
+                <a href="/admin/post-edit/<%= post._id%>" class="btn-edit">Edit</a>
+            </div>
             <% } %>
-                <a href="/save/<%= post._id%>">Save to device</a>
-                <img src="<%= '/' + post.imgUrl %>" alt="<%= post.title %>">
-                <hr>
                 <p>
                     <%= post.description %>
                 </p>
-                <% if(post.userId._id.toString()===currentLoginUserId.toString()) { %>
-                    <div>
-                        <div class="login-div">
-                            <form action="/admin/post/<%= post._id%>" method="post">
-                                <button>Delete</button>
-                            </form>
-                            <a href="/admin/post-edit/<%= post._id%>" class="btn-edit">Edit</a>
-                            <% } %>
-                        </div>
-                    </div>
     </section>
     <%- include("./includes/foot") %>

@@ -51,7 +51,7 @@ exports.renderCreatePage = (req, res) => {
     })
 }
 
-const POST_PAR_PAGE = 3
+const POST_PAR_PAGE = 6
 
 exports.getPosts = (req, res, next) => {
     //.skip(1).limit(2)
@@ -63,7 +63,7 @@ exports.getPosts = (req, res, next) => {
 
     Post.find().countDocuments().then(totalPostCount => {
         totalPostNumber = totalPostCount;
-        return Post.find().select("title description")
+        return Post.find().select("title description imgUrl")
             .populate('userId', "email")
             .skip((pageNumber - 1) * POST_PAR_PAGE).limit(POST_PAR_PAGE)
             .sort({ createdAt: -1 })
@@ -74,7 +74,7 @@ exports.getPosts = (req, res, next) => {
                 title: "HomePage",
                 postsArr: posts,
                 isLogin: req.session.isLogin ? true : false,
-                currentUserEmail: req.session.userInfo ? req.session.userInfo.email : "",
+                // currentUserEmail: req.session.userInfo ? req.session.userInfo.email : "",
                 currentPage: pageNumber,
                 hasNextPage: POST_PAR_PAGE * pageNumber < totalPostNumber,
                 hasPreviousPage: pageNumber > 1,

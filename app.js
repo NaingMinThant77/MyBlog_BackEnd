@@ -77,11 +77,11 @@ app.use((req, res, next) => {
 app.use(flash());
 
 // //to send csrf token for every page
-// app.use((req, res, next) => {
-//     res.locals.isLogin = req.session.isLogin ? true : false;
-//     res.locals.csrfToken = req.csrfToken();
-//     next();
-// })
+app.use((req, res, next) => {
+    res.locals.isLogin = req.session.isLogin ? true : false;
+    // res.locals.csrfToken = req.csrfToken();
+    next();
+})
 // <!-- <input type="hidden" name="_csrf" value="<%= csrfToken %>"> -->
 
 //Routes

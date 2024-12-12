@@ -1,72 +1,41 @@
 <%- include("./includes/head") %>
-
     <section class="header">
-        <h1>Blog.io</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum dignissimos rem et nobis
-            ipsam
-            necessitatibus ullam quidem corporis saepe doloribus quos, adipisci quasi consequuntur repellendus autem
-            aspernatur sapiente unde molestiae? Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-            dignissimos
-            rem et nobis ipsam
-            necessitatibus ullam quidem corporis saepe doloribus quos, adipisci quasi consequuntur repellendus autem
-            aspernatur sapiente unde molestiae?</p>
-    </section>
-    <% if(isLogin) { %>
-        <div class="login-div">
+        <h1 class="title">Recent Posts</h1>
+        <% if (postsArr.length===0 && isLogin) { %>
             <div>
-                <a href="/admin/create-post">Add a new post as <%= currentUserEmail%></a>
-                <span>OR</span>
-                <form action="/logout" method="post">
-                    <button>Logout</button>
-                </form>
-            </div>
-        </div>
-        <% } else { %>
-            <div class="login-div">
-                <div>
-                    <a href="/login">Login to existing account</a>
-                    <span>OR</span>
-                    <a href="/register">Create a new account</a>
-                </div>
+                <h4>Nothing to see?</h4>
+                <p>Create a new post now</p>
+                <!-- <a href="/admin/create-post">Create a new post as <%= currentUserEmail%></a> -->
+                <a href="/admin/create-post">Create a new post </a>
             </div>
             <% } %>
-                <hr>
-                <h1 class="title">Recent Posts</h1>
-                <% if (postsArr.length===0 && isLogin) { %>
-                    <div class="pl-80">
-                        <h4>Nothing to see?</h4>
-                        <p>Create a new post now</p>
-                        <!-- <a href="/admin/create-post">Create a new post as <%= currentUserEmail%></a> -->
-                        <a href="/admin/create-post">Create a new post </a>
-                    </div>
-                    <% } %>
-                        <div class="post-container">
-                            <% for( let post of postsArr) { %>
-                                <div class="post-box">
-                                    <p class="post-title">
-                                        <%= post.title %>
-                                    </p>
-                                    <p class="post-email">
-                                        Post by : <%= post.userId.email %>
-                                    </p>
-                                    <p calss="post-des">
-                                        <%= post.description.substr(0, 400) %>
-                                    </p>
-                                    <a class="btn" href="/post/<%= post._id %>">See More...</a>
-                                    <hr>
-                                </div>
-                                <% } %>
+                <div class="post-container">
+                    <% for( let post of postsArr) { %>
+                        <div class="post-box">
+                            <img src="<%= '/' + post.imgUrl %>" alt="<%= post.title %>" class="post-box-img">
+                            <a class="post-title" href="/post/<%= post._id %>">
+                                <%= post.title.substr(0, 35) %>
+                            </a>
+                            <p calss="post-des">
+                                <%= post.description.substr(0, 100) %>
+                            </p>
+                            <hr>
+                            <p class="post-email">
+                                Post by : <%= post.userId.email %>
+                            </p>
                         </div>
-                        <div class="paginate">
-                            <% if(!hasNextPage && currentPage==1 ) {%>
-                                <a href="?page=2">NextPage</a>
+                        <% } %>
+                </div>
+                <div class="paginate">
+                    <% if(!hasNextPage && currentPage==1 ) {%>
+                        <a href="?page=2">NextPage</a>
+                        <% } %>
+                            <% if(hasNextPage ) {%>
+                                <a href="?page=<%=nextPage%>">NextPage<%=nextPage%></a>
                                 <% } %>
-                                    <% if(hasNextPage ) {%>
-                                        <a href="?page=<%=nextPage%>">NextPage<%=nextPage%></a>
+                                    <% if(hasPreviousPage ) {%>
+                                        <a href="?page=<%=previousPage%>">PreviousPage<%=previousPage%></a>
                                         <% } %>
-                                            <% if(hasPreviousPage ) {%>
-                                                <a href="?page=<%=previousPage%>">PreviousPage<%=previousPage%></a>
-                                                <% } %>
 
-                        </div>
-                        <%- include("./includes/foot") %>
+                </div>
+                <%- include("./includes/foot") %>

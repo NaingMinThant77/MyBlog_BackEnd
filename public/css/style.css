@@ -6,64 +6,59 @@
     padding: 0;
 }
 
-.header {
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    padding: 0 80px;
+a {
+    display: block;
+    margin: 10px 0;
+    color: white;
+    background-color: black;
+    padding: 8px 10px;
+    width: fit-content;
+    text-decoration: none;
 }
 
-.header h1 {
-    font-size: 45px;
+/* for title */
+.post-box a {
+    color: black;
+    background-color: transparent;
+    padding: 0;
+    text-decoration: underline;
 }
 
-.header p {
-    font-size: 22px;
+.gb-btn {
+    margin: 0;
 }
 
-.pl-80 {
-    padding-left: 80px;
-}
-
-
-.login-div,
-.login-div div {
+nav {
+    width: 60%;
+    margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    background-color: black;
+    padding: 0 10px;
 }
 
-.login-div div {
-    gap: 10px;
+nav .right-side {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.login-div div span {
-    font-size: 20px;
-    font-weight: bold;
+.header {
+    width: 60%;
+    margin: 0 auto;
 }
 
 .title {
     font-size: 35px;
-    padding-left: 80px;
     margin-bottom: 20px;
     margin-top: 20px;
 }
 
 .post-container {
-    padding: 0 80px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
-}
-
-.post-des {
-    font-size: 22px;
-}
-
-.post-email {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 10px 0;
 }
 
 .post-box {
@@ -71,9 +66,26 @@
 }
 
 .post-title {
-    font-size: 30px;
+    font-size: 25px;
     text-transform: uppercase;
     font-weight: 600;
+}
+
+.post-box-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.post-des {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.post-email {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
 }
 
 .four {
@@ -96,21 +108,22 @@
     flex-direction: row-reverse;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 80px 10px 80px;
+}
+
+.tmp {
+    margin: 4px 0;
+    font-weight: 500;
+    font-size: 18px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.tmp i {
+    font-size: 20px;
 }
 
 /* global-style */
-
-a {
-    display: block;
-    margin: 10px 0;
-    color: white;
-    background-color: black;
-    padding: 8px 10px;
-    width: fit-content;
-    text-decoration: none;
-    text-align: right;
-}
 
 label {
     display: block;
@@ -152,16 +165,16 @@ button,
     padding: 20px 0;
 }
 
-.details div {
-    display: grid;
+.details .details-first {
+    display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 40px;
 }
 
 .details h1 {
     font-size: 40px;
-    margin-top: 10px;
-    margin-bottom: 40px;
 }
 
 .details img {
@@ -176,6 +189,33 @@ button,
 
 .details p {
     font-size: 21px;
+}
+
+.action-div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-direction: row-reverse;
+}
+
+.details-sec {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 8px;
+}
+
+.details-sec .down-ic {
+    font-size: 35px;
+}
+
+.details-sec a {
+    margin: 0;
+    color: #000;
+    background-color: transparent;
+    padding: 0;
 }
 
 .msg-box {
