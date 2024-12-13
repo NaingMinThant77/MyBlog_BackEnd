@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router()
 
 const postController = require("../controllers/post")
+const userController = require("../controllers/user")
 const { body } = require("express-validator")
 
 router.get("/create-post", postController.renderCreatePage)
@@ -28,5 +29,7 @@ router.post("/post-edit", [
         .isLength({ min: 30 })
         .withMessage("Description must have 30 letters."),
 ], postController.updatePost);
+
+router.get("/profile", userController.getProfile)
 
 module.exports = router;
