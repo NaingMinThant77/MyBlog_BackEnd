@@ -83,9 +83,10 @@ nav .right-side {
 }
 
 .post-email {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 600;
     margin: 10px 0;
+    text-decoration: none !important;
 }
 
 .four {
@@ -230,4 +231,69 @@ button,
 .warm {
     border: 1px solid yellow;
     background-color: rgb(233, 233, 163);
+}
+
+.public-user {
+    text-align: center;
+    margin: 40px 0 20px 0;
+}
+
+.public-user i,
+.own-user i {
+    font-size: 6rem;
+}
+
+.own-user {
+    margin: 40px 0 20px 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.own-user .ic-email {
+    text-align: center;
+}
+
+.own-user-right a {
+    text-align: center;
+    width: 100%;
+}
+
+/* premium */
+
+.premium {
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+
+.card {
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 8px;
+}
+
+.card h3 {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.card p {
+    background-color: black;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 18px;
+    text-align: center;
+
+}
+
+.card ul li {
+    list-style: none;
+    margin-bottom: 10px;
+    font-size: 18px;
 }

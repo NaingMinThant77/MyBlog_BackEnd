@@ -32,4 +32,10 @@ router.post("/post-edit", [
 
 router.get("/profile", userController.getProfile)
 
+router.get("/username", userController.renderUsernamePage)
+
+router.post("/setusername", body("username").isLength({ min: 4 }).withMessage("username must have 4 letters"), userController.setUsername)
+
+router.get("/premium", userController.renderPremiumPage)
+
 module.exports = router;

@@ -68,7 +68,7 @@ app.use((req, res, next) => {
     User.findById(req.session.userInfo._id).select("_id email").then(
         user => {
             req.user = user; //custom request and add
-            console.log(req.user)
+            // console.log(req.user)
             next();
         }
     )
