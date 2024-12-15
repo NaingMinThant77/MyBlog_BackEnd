@@ -5,6 +5,8 @@ const userSchema = new Schema({
     username: { type: String, unique: true, minLength: 3 },
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true, minLength: 4 },
+    isPremium: { type: Boolean, default: false },
+    payment_session_key: { type: String },
     resetToken: String,
     tokenExpiration: Date
 })

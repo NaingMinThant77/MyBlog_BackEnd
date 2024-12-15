@@ -38,4 +38,6 @@ router.post("/setusername", body("username").isLength({ min: 4 }).withMessage("u
 
 router.get("/premium", userController.renderPremiumPage)
 
+router.get("/subscription-success", userController.getSuccessPage)
+
 module.exports = router;
