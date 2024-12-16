@@ -64,7 +64,7 @@ exports.getPosts = (req, res, next) => {
     Post.find().countDocuments().then(totalPostCount => {
         totalPostNumber = totalPostCount;
         return Post.find().select("title description imgUrl")
-            .populate('userId', "email")
+            .populate('userId', "email isPremium username")
             .skip((pageNumber - 1) * POST_PAR_PAGE).limit(POST_PAR_PAGE)
             .sort({ createdAt: -1 })
     }).then(posts => {
@@ -92,7 +92,7 @@ exports.getPosts = (req, res, next) => {
 
 exports.getPost = (req, res, next) => {
     const postId = req.params.postId;
-    Post.findById(postId).populate("userId", "email").then(
+    Post.findById(postId).populate("userId", "email isPremium").then(
         post => {
             res.render("details", {
                 title: post.title,

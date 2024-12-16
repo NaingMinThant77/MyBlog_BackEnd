@@ -259,6 +259,18 @@ button,
     width: 100%;
 }
 
+/* homepage */
+
+.user-index {
+    display: flex;
+    align-items: center;
+}
+
+.user-index-ic {
+    font-size: 60px;
+    margin-right: 4px;
+}
+
 /* premium */
 
 .premium {
@@ -300,4 +312,39 @@ button,
 
 .premium-username i {
     font-size: 18px;
+}
+
+/* payment detail */
+
+.p-details {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.p-details h1 {
+    font-size: 3rem;
+}
+
+.p-details span {
+    font-weight: bold;
+}
+
+.p-details .status {
+    background-color: green;
+    color: white;
+    padding: 1px 3px 3px 1px;
+}
+
+/* subsciption success */
+
+.s-success {
+    text-align: center;
+}
+
+.s-success h1 {
+    font-size: 3rem;
+}
+
+.s-success a {
+    margin: 0 auto;
 }

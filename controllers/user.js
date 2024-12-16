@@ -121,7 +121,7 @@ exports.renderPremiumPage = (req, res, next) => {
 
 exports.getSuccessPage = (req, res) => {
     const session_id = req.query.session_id;
-    if (!session_id) {
+    if (!session_id || !session_id.includes("cs_test_")) {
         return res.redirect("/admin/profile");
     }
     User.findById(req.user._id).then(user => {
@@ -129,9 +129,32 @@ exports.getSuccessPage = (req, res) => {
         user.payment_session_key = session_id
         return user.save()
     }).then(() => {
-        res.render("user/subscription-success", { title: "Success", subscription_id: session_id })
+        res.render("user/subscription-success", { title: "Success" })
     }).catch(err => {
         console.log(err)
         return next(new Error("Something went wrong when rendering success page"));
     })
 }
+
+exports.getPremiumDetails = (req, res, next) => {
+    User.findById(req.user._id)
+        .then(user => {
+            return stripe.checkout.sessions.retrieve(user.payment_session_key);
+        })
+        .then(stripe_session => {
+            res.render("user/premium-details", {
+                title: "Status",
+                customer_id: stripe_session.customer,
+                country: stripe_session.customer_details.address?.country || "N/A", // Handle null/undefined gracefully
+                postal_code: stripe_session.customer_details.address?.postal_code || "N/A",
+                email: stripe_session.customer_details.email || "N/A", // Corrected email access
+                name: stripe_session.customer_details.name || "N/A", // Corrected name access
+                invoice_id: stripe_session.invoice || "N/A",
+                status: stripe_session.payment_status || "N/A"
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            return next(new Error("Something went wrong when rendering success page"));
+        });
+};

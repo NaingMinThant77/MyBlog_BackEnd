@@ -1,7 +1,7 @@
 const express = require("express")
 const path = require("path");
 
-// const { posts } = require("./admin");
+const { isPremium } = require("../middleware/is-premium")
 
 const router = express.Router()
 
@@ -13,7 +13,7 @@ router.get("/", postController.getPosts)
 
 router.get("/post/:postId", postController.getPost)
 
-router.get("/save/:id", postController.savePostAsPDF)
+router.get("/save/:id", isPremium, postController.savePostAsPDF)
 
 router.get("/profile/:id", userController.getPublicProfile)
 
