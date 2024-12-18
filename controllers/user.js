@@ -1,6 +1,7 @@
 const Post = require("../models/post")
 const { validationResult } = require("express-validator")
 const User = require("../models/user")
+const path = require("path");
 
 const stripe = require("stripe")("sk_test_51QWDaeGoFgMOImd9s7yXYfOZw2CXKhLWSx6mn66EDSuPRKJx1tArKgTlhn22830yLeFyy8I8hoR3rVQG5qq5kis200S2XcfyUA") //npm install stripe --save
 
@@ -12,13 +13,15 @@ exports.getProfile = (req, res, next) => {
 
     Post.find({ userId: req.user._id }).countDocuments().then(totalPostCount => {
         totalPostNumber = totalPostCount;
-        return Post.find({ userId: req.user._id }).populate('userId', "email username isPremium")
+        return Post.find({ userId: req.user._id }).populate('userId', "email username isPremium profile_imgUrl")
             .skip((pageNumber - 1) * POST_PAR_PAGE).limit(POST_PAR_PAGE)
             .sort({ createdAt: -1 })
     }).then(posts => {
         // console.log(posts)
-        if (posts.length > 0) {
-            res.render("user/profile", {
+        if (!posts.length && pageNumber > 1) {
+            return res.status(500).render("error/500", { title: "Something went wrong!", message: "No post in this page query" })
+        } else {
+            return res.render("user/profile", {
                 title: req.session.userInfo.email,
                 postsArr: posts,
                 // isLogin: req.session.isLogin ? true : false,
@@ -29,8 +32,6 @@ exports.getProfile = (req, res, next) => {
                 previousPage: pageNumber - 1,
                 currentUserEmail: req.session.userInfo ? req.session.userInfo.email : ""
             });
-        } else {
-            return res.status(500).render("error/500", { title: "Something went wrong!", message: "No post in this page query" })
         }
     }).catch(err => {
         console.log(err)
@@ -45,7 +46,7 @@ exports.getPublicProfile = (req, res, next) => {
 
     Post.find({ userId: id }).countDocuments().then(totalPostCount => {
         totalPostNumber = totalPostCount;
-        return Post.find({ userId: id }).populate('userId', "email isPremium username")
+        return Post.find({ userId: id }).populate('userId', "email isPremium username profile_imgUrl")
             .skip((pageNumber - 1) * POST_PAR_PAGE).limit(POST_PAR_PAGE)
             .sort({ createdAt: -1 })
     }).then(posts => {
@@ -158,3 +159,39 @@ exports.getPremiumDetails = (req, res, next) => {
             return next(new Error("Something went wrong when rendering success page"));
         });
 };
+
+exports.getProfileUploadPage = (req, res) => {
+    res.render("user/profile-upload", { title: "Profile Image", errorMsg: "" })
+}
+
+exports.setProfileImage = (req, res, next) => {
+    const photo = req.file;
+
+    if (photo === undefined) {
+        return res.status(422).render("user/profile-upload", {
+            title: "Profile Image",
+            errorMsg: "Image extension must be jpg, png and jpeg",
+        })
+    }
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) { //422 - validation
+        return res.status(422).render("user/profile-upload", {
+            title: "Profile Image",
+            errorMsg: errors.array()[0].msg,
+        })
+    }
+
+    User.findById(req.user._id)
+        .then(user => {
+            user.profile_imgUrl = photo.path;
+            return user.save();
+        })
+        .then(_ => {
+            res.redirect("/admin/profile");
+        })
+        .catch(err => {
+            console.error(err);
+            return next(new Error("Something went wrong when uploading the profile image."));
+        });
+}

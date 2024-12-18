@@ -238,6 +238,21 @@ button,
     margin: 40px 0 20px 0;
 }
 
+.profile-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 10%;
+    object-fit: cover;
+}
+
+.profile-photo-home {
+    width: 62px;
+    height: 62px;
+    border-radius: 20%;
+    margin-right: 7px;
+    object-fit: cover;
+}
+
 .public-user i,
 .own-user i {
     font-size: 6rem;
@@ -250,10 +265,6 @@ button,
     justify-content: space-between;
 }
 
-.own-user .ic-email {
-    text-align: center;
-}
-
 .own-user-right a {
     text-align: center;
     width: 100%;
@@ -263,7 +274,7 @@ button,
 
 .user-index {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .user-index-ic {

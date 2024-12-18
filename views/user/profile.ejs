@@ -1,54 +1,66 @@
 <%- include("../includes/head") %>
-    <section class="header">
-        <div class="own-user">
-            <div class="ic-email">
-                <i class="fa-solid fa-circle-user "></i>
-                <p>
-                    <%= currentUserEmail %>
-                </p>
-                <p>
-                    <% if(postsArr[0].userId.username) {%>
-                        <p class="premium-username">
-                            <%= postsArr[0].userId.username %>
-                                <% if( postsArr[0].userId.isPremium) {%>
-                                    <i
-                                        class="fa-solid fa-star animate__animated animate__jello animate__infinite	infinite"></i>
-                        </p>
-                        <% } %>
+    <% if(postsArr.length> 0) { %>
+        <section class="header">
+            <div class="own-user">
+                <div class="ic-email">
+                    <% if(postsArr[0].userId.profile_imgUrl && postsArr[0].userId.isPremium ) { %>
+                        <img src="<%= '/' + postsArr[0].userId.profile_imgUrl %>"
+                            alt="<%= postsArr[0].userId.username %>" class="profile-photo">
+                        <% } else { %>
+                            <i class="fa-solid fa-circle-user "></i>
                             <% } %>
-                </p>
-            </div>
-            <div class="own-user-right">
-                <a href="/admin/username">Set Username</a>
-                <% if(postsArr[0].userId.isPremium) { %>
-                    <a href="/admin/premium-details">IO Premium Status</a>
-                    <% } else { %>
-                        <a href="/admin/premium">Buy IO Premium</a>
-                        <% } %>
-            </div>
-        </div>
-        <div class="post-container">
-            <% for( let post of postsArr) { %>
-                <div class="post-box">
-                    <img src="<%= '/' + post.imgUrl %>" alt="<%= post.title %>" class="post-box-img">
-                    <a class="post-title" href="/post/<%= post._id %>">
-                        <%= post.title.substr(0, 35) %>
-                    </a>
-                    <p calss="post-des">
-                        <%= post.description.substr(0, 100) %>
-                    </p>
-                    <hr>
+                                <p>
+                                    <%= currentUserEmail %>
+                                </p>
+                                <p>
+                                    <% if(postsArr[0].userId.username) {%>
+                                        <p class="premium-username">
+                                            <%= postsArr[0].userId.username %>
+                                                <% if( postsArr[0].userId.isPremium) {%>
+                                                    <i
+                                                        class="fa-solid fa-star animate__animated animate__jello animate__infinite	infinite"></i>
+                                        </p>
+                                        <% } %>
+                                            <% } %>
+                                </p>
                 </div>
-                <% } %>
-        </div>
-        <div class="paginate">
-            <% if(hasNextPage ) {%>
-                <a href="/admin/profile?page=<%=nextPage%>">NextPage<%=nextPage%></a>
-                <% } %>
-                    <% if(hasPreviousPage ) {%>
-                        <a href="/admin/profile?page=<%=previousPage%>">PreviousPage<%=previousPage%></a>
-                        <% } %>
-
-        </div>
-    </section>
-    <%- include("../includes/foot") %>
+                <div class="own-user-right">
+                    <a href="/admin/username">Set Username</a>
+                    <% if(postsArr[0].userId.isPremium) { %>
+                        <a href="/admin/premium-details">IO Premium Status</a>
+                        <a href="/admin/profile-image">Upload Profile</a>
+                        <% } else { %>
+                            <a href="/admin/premium">Buy IO Premium</a>
+                            <% } %>
+                </div>
+            </div>
+            <div class="post-container">
+                <% for( let post of postsArr) { %>
+                    <div class="post-box">
+                        <img src="<%= '/' + post.imgUrl %>" alt="<%= post.title %>" class="post-box-img">
+                        <a class="post-title" href="/post/<%= post._id %>">
+                            <%= post.title.substr(0, 35) %>
+                        </a>
+                        <p calss="post-des">
+                            <%= post.description.substr(0, 100) %>
+                        </p>
+                        <hr>
+                    </div>
+                    <% } %>
+            </div>
+            <div class="paginate">
+                <% if( hasNextPage ) {%>
+                    <a href="/admin/profile?page=<%=nextPage%>">NextPage<%=nextPage%></a>
+                    <% } %>
+                        <% if( hasPreviousPage ) {%>
+                            <a href="/admin/profile?page=<%=previousPage%>">PreviousPage<%=previousPage%></a>
+                            <% } %>
+            </div>
+        </section>
+        <% } else { %>
+            <section class="header">
+                <h1 style="font-size: 3rem;">Create a new post first.</h1>
+                <a href="/admin/create-post">Create Post</a>
+            </section>
+            <% } %>
+                < <%- include("../includes/foot") %>
