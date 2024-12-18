@@ -51,7 +51,7 @@ exports.renderCreatePage = (req, res) => {
     })
 }
 
-const POST_PAR_PAGE = 6
+const POST_PAR_PAGE = 4
 
 exports.getPosts = (req, res, next) => {
     //.skip(1).limit(2)

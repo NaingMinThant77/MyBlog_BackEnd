@@ -35,7 +35,7 @@ nav {
     align-items: center;
     justify-content: space-between;
     background-color: black;
-    padding: 0 10px;
+    margin: 0 auto 20px auto;
 }
 
 nav .right-side {
@@ -57,8 +57,8 @@ nav .right-side {
 
 .post-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
 }
 
 .post-box {
@@ -260,14 +260,22 @@ button,
 
 .own-user {
     margin: 40px 0 20px 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
 }
 
 .own-user-right a {
     text-align: center;
-    width: 100%;
+}
+
+.own-user-left {
+    text-align: center;
+}
+
+.own-user-right-premium,
+.own-user-right-notpremium {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 /* homepage */
@@ -330,10 +338,31 @@ button,
 .p-details {
     width: 60%;
     margin: 0 auto;
+    background-color: black;
+    color: white;
+    border-radius: 12px;
+}
+
+.p-details-p {
+    padding: 40px;
 }
 
 .p-details h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
+}
+
+.p-details p {
+    margin-bottom: 4px;
+}
+
+.p-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.p-header i {
+    font-size: 40px;
 }
 
 .p-details span {
